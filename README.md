@@ -1,4 +1,4 @@
-# Docker Template for Zend Expressive Development
+# Docker for Building a Local Development Environment
 
 This project provides a basic Docker setup, for building a local development environment for Zend Expressive, and other PHP application development.
 
