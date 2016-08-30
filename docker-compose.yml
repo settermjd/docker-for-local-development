@@ -1,0 +1,67 @@
+###########################
+# Setup the Nginx container
+###########################
+nginx:
+    build: ./docker/nginx/
+    ports:
+        - 8080:80
+    links:
+        - php
+    volumes_from:
+        - app
+
+###########################
+# Setup the PHP container
+###########################
+php:
+    build: ./docker/php/
+    expose:
+        - 9000
+    links:
+        - mysql:database-server
+    volumes_from:
+        - app
+
+###########################
+# Setup the testing container
+###########################
+testing:
+    build: ./docker/php/
+    links:
+        - nginx
+        - mysql:database-server
+    volumes_from:
+        - app
+
+###########################
+# Provide reusable settings
+###########################
+app:
+    image: php:7.0-fpm
+    volumes:
+        - .:/var/www/html
+    command: "true"
+
+###########################
+# Setup the Database (MySQL) container
+###########################
+mysql:
+    image: mysql:latest
+    expose:
+        - 3306
+    volumes_from:
+        - data
+    environment:
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: project
+        MYSQL_USER: project
+        MYSQL_PASSWORD: project
+
+###########################
+# Provide reusable database data settings
+###########################
+data:
+    image: mysql:latest
+    volumes:
+        - /var/lib/mysql
+    command: "true"
