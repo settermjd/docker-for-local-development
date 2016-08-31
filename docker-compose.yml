@@ -10,9 +10,11 @@ volumes:
 # Setup the Nginx container
 ###########################
 nginx:
-    build: ./docker/nginx/
+    image: nginx:latest
     ports:
         - 8080:80
+    volumes:
+        - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     volumes_from:
         - php
 
