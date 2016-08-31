@@ -1,3 +1,11 @@
+# Adopt version 2 syntax:
+#   https://docs.docker.com/compose/compose-file/#/versioning
+version: '2'
+
+volumes:
+    database_data:
+        driver: local
+
 ###########################
 # Setup the Nginx container
 ###########################
@@ -5,10 +13,8 @@ nginx:
     build: ./docker/nginx/
     ports:
         - 8080:80
-    links:
-        - php
     volumes_from:
-        - app
+        - php
 
 ###########################
 # Setup the PHP container
@@ -17,30 +23,16 @@ php:
     build: ./docker/php/
     expose:
         - 9000
-    links:
-        - mysql:database-server
-    volumes_from:
-        - app
+    volumes:
+        - .:/var/www/html
 
 ###########################
 # Setup the testing container
 ###########################
 testing:
     build: ./docker/php/
-    links:
-        - nginx
-        - mysql:database-server
     volumes_from:
-        - app
-
-###########################
-# Provide reusable settings
-###########################
-app:
-    image: php:7.0-fpm
-    volumes:
-        - .:/var/www/html
-    command: "true"
+        - php
 
 ###########################
 # Setup the Database (MySQL) container
@@ -49,19 +41,10 @@ mysql:
     image: mysql:latest
     expose:
         - 3306
-    volumes_from:
-        - data
+    volumes:
+        - database_data:/var/lib/mysql
     environment:
         MYSQL_ROOT_PASSWORD: secret
         MYSQL_DATABASE: project
         MYSQL_USER: project
         MYSQL_PASSWORD: project
-
-###########################
-# Provide reusable database data settings
-###########################
-data:
-    image: mysql:latest
-    volumes:
-        - /var/lib/mysql
-    command: "true"
