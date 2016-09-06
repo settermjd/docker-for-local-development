@@ -6,47 +6,48 @@ volumes:
     database_data:
         driver: local
 
+services:
 ###########################
 # Setup the Nginx container
 ###########################
-nginx:
-    image: nginx:latest
-    ports:
-        - 8080:80
-    volumes:
-        - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    volumes_from:
-        - php
+    nginx:
+        image: nginx:latest
+        ports:
+            - 8080:80
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        volumes_from:
+            - php
 
 ###########################
 # Setup the PHP container
 ###########################
-php:
-    build: ./docker/php/
-    expose:
-        - 9000
-    volumes:
-        - .:/var/www/html
+    php:
+        build: ./docker/php/
+        expose:
+            - 9000
+        volumes:
+            - .:/var/www/html
 
 ###########################
 # Setup the testing container
 ###########################
-testing:
-    build: ./docker/php/
-    volumes_from:
-        - php
+    testing:
+        build: ./docker/php/
+        volumes_from:
+            - php
 
 ###########################
 # Setup the Database (MySQL) container
 ###########################
-mysql:
-    image: mysql:latest
-    expose:
-        - 3306
-    volumes:
-        - database_data:/var/lib/mysql
-    environment:
-        MYSQL_ROOT_PASSWORD: secret
-        MYSQL_DATABASE: project
-        MYSQL_USER: project
-        MYSQL_PASSWORD: project
+    mysql:
+        image: mysql:latest
+        expose:
+            - 3306
+        volumes:
+            - database_data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: project
+            MYSQL_USER: project
+            MYSQL_PASSWORD: project
