@@ -30,14 +30,6 @@ services:
             - .:/var/www/html
 
 ###########################
-# Setup the testing container
-###########################
-    testing:
-        build: ./docker/php/
-        volumes_from:
-            - php
-
-###########################
 # Setup the Database (MySQL) container
 ###########################
     mysql:
