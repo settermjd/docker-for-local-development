@@ -27,15 +27,7 @@ services:
         expose:
             - 9000
         volumes:
-            - .:/var/www/html
-
-###########################
-# Setup the testing container
-###########################
-    testing:
-        build: ./docker/php/
-        volumes_from:
-            - php
+            - /Users/omatrot/Documents/etp_web:/etp_web
 
 ###########################
 # Setup the Database (MySQL) container
@@ -45,9 +37,9 @@ services:
         expose:
             - 3306
         volumes:
-            - database_data:/var/lib/mysql
+            - database_data:/usr/local/var/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: secret
-            MYSQL_DATABASE: project
-            MYSQL_USER: project
-            MYSQL_PASSWORD: project
+            MYSQL_ROOT_PASSWORD: knhGxQHUify7
+            MYSQL_DATABASE: etp
+            MYSQL_USER: test
+            MYSQL_PASSWORD: knhGxQHUify7
