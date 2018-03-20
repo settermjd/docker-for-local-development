@@ -27,19 +27,19 @@ services:
         expose:
             - 9000
         volumes:
-            - .:/var/www/html
+            - ./code:/var/www/html
 
 ###########################
 # Setup the Database (MySQL) container
 ###########################
     mysql:
         image: mysql:latest
-        expose:
-            - 3306
+        ports:
+            - 3306:3306
         volumes:
             - database_data:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: secret
-            MYSQL_DATABASE: project
-            MYSQL_USER: project
-            MYSQL_PASSWORD: project
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: lng
+            MYSQL_USER: lng
+            MYSQL_PASSWORD: lng
